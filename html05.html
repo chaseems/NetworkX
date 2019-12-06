@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<header></header>
+<body>
+
+<h1>First Graph</h1>
+<div>
+    <input type="file" id="files" accept=".json"/>
+</div>
+<div id="filecontent"></div>
+<div id="logs">show testJson</div>
+<input type="button" id="load" value="Load">
+<script>
+    var inputElement = document.getElementById("files");
+    var testJson = "This is a test.";
+    var testJsonAll;
+    inputElement.addEventListener("change", handleFiles, false);
+    function handleFiles() {
+       var selectedFile = document.getElementById("files").files[0];//get the object of file
+       var name = selectedFile.name;//read name of the file
+       var size = selectedFile.size;//read size of the file
+       console.log("file name:" + name + ", size："+size);
+       var reader = new FileReader();//read the file
+       reader.readAsText(selectedFile);//read content of the file
+       var testJsonInside;
+       reader.onload = function(){
+           console.log("results：", this.result);//when the read finished, callback this function, and content store to result
+           console.log("the content which readed transfer to JSON：");
+           let json = JSON.parse(this.result);
+           document.getElementById("logs").innerHTML = testJson;
+           console.log('This is the result: '+json);
+           document.getElementById("filecontent").innerHTML = this.result;
+           testJson = json;
+           for (var i=0; i<5; i++){console.log(testJson.elements[i])}
+           console.log(json.name);
+           console.log('This is elements: ');
+           console.log(json.elements);
+           console.log('This is data[0]: ');
+           console.log(json.elements[0])
+           
+
+           testJson = json.elements;
+           testJsonAll = this.result;
+       };
+       testJson = testJsonInside;
+       /* document.getElementById("load").onclick = function(){
+           var jsonLength = testJson.length;
+        for (var i=0; i<jsonLength; i++){
+            console.log(testJson[i])
+        }
+
+       } */
+       
+
+    }
+    document.log(testJson);
+    document.getElementById("log").innerHTML = testJson;
+</script>
+<input type="button" id="add" value="ADD">
+<div id="cy", style="width: 800px;height: 800px;display: block;" ></div>
+<script src="./node_modules/cytoscape/dist/cytoscape.umd.js"></script>
+<script>
+    var cy = cytoscape({
+        container: document.getElementById('cy')
+    });
+    document.getElementById("load").onclick = function(){
+        
+        /* for (var i=0; i<4;i++){
+            console.log(testJson.length);
+            console.log(testJson[i].data.id);
+            cy.add({
+                data:{id: testJson[i].data.id}
+            });
+            /* if(i<4){
+                
+            } 
+        } */
+        for (const node of testJson){
+            console.log(testJson.length);
+            console.log(node.data.id);
+            cy.add({
+                data:{id:node.data.id}
+            });
+        }
+    }
+    
+    document.getElementById("add").onclick = function(){
+        cy.add({
+            data:{"id": "ad", "source": "a", "target": "d"}
+        });
+    }
+</script>
+
+</body>
+</html> 

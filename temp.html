@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    ul.tabs {
+        margin: 0;
+        padding: 0;
+        float: left;
+        list-style: none;
+        height: 32px;
+        width: 100%;
+        font-size: 0;
+    }
+    ul.tabs li {
+        display: inline-block;
+        font-size: 16px;
+        box-sizing: border-box;
+        text-align: center;
+        font-weight: bold;
+        margin: 0;
+        cursor: pointer;
+        padding: 7px 21px;
+        line-height: 31px;
+        background-color: #ccc;
+        color: #000;
+        overflow: hidden;
+        position: relative;
+        border-right: 1px solid #fff;
+    }
+    ul.tabs li:last-child {
+        border: 0px none;
+    }
+    ul.tabs li:hover {
+        background-color: #ccc;
+        color: #333;
+    }
+    ul.tabs li.active {
+        background-color: #fff;
+        color: #ccc;
+        border-bottom: 1px solid #fff;
+    }
+    .tab_container {
+        border-top: none;
+        clear: both;
+        float: left;
+        width: 100%;
+        background: #fff;
+        overflow: auto;
+    }
+    .tab_content {
+        padding: 20px;
+        display: none;
+    }
+    .tab_heading {
+        display: none;
+    }
+  </style>
+</head>
+<body>
+    <ul class="tabs">
+        <li class="active" rel="tab1">Option 1</li>
+        <li rel="tab2" onclick="loadJSON(anonumous, 'tab2', 2)">Option 2</li>
+        <li rel="tab3" onclick="loadJSON(anonumous, 'tab3', 3)">Option 3</li>
+    </ul>
+    <div class="tab_container">
+        <div id="tab1" class="tab_content"></div>
+        <!-- #tab1 -->
+        <div id="tab2" class="tab_content"></div>
+        <!-- #tab2 -->
+        <div id="tab3" class="tab_content">    </div>
+        <!-- #tab3 -->
+    </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    // tabbed content
+    $(".tab_content").hide();
+    $(".tab_content:first").show();
+    /* Tab Click */
+    $("ul.tabs li").click(function() {
+        $(".tab_content").hide();
+        var activeTab = $(this).attr("rel");
+        $("#" + activeTab).fadeIn();
+        $("ul.tabs li").removeClass("active");
+        $(this).addClass("active");
+        $(".tab_heading").removeClass("active");
+        $(".tab_heading[rel^='" + activeTab + "']").addClass("active");
+    });
+    /* Load Data Using JS */
+    var responseArr = [];
+    function loadJSON(callback, x, number) {
+        var urlVar = x;
+        //Check if data has already loaded
+        if (responseArr[number - 1] == undefined) {
+            var xobj = new XMLHttpRequest();
+            xobj.overrideMimeType("application/json");
+            xobj.open('GET', urlVar + '.json', true);
+            xobj.onreadystatechange = function() {
+                if (xobj.readyState == 4 && xobj.status == "200") {
+                    // .open will NOT return a value but simply returns undefined in async mode so use a callback
+                    callback(xobj.responseText);
+                }
+            }
+            xobj.send(null);
+        }
+    }
+    function anonumous(response) {
+        jsonresponse = JSON.parse(response);
+        responseArr.push(jsonresponse);
+        console.log(responseArr)
+        for (i = 1; i <= responseArr.length; i++) {
+            document.getElementById("tab" + i).innerHTML = responseArr[i - 1].tabData.content;
+        }
+    }
+    // Initial Call to function with anonymous callback
+    loadJSON(anonumous, 'tab1', 1);
+  
+</script>
+</html>
