@@ -1,0 +1,1 @@
+{"elements": {"nodes": [{"data": {"node_id": "12000002", "name": "Tian Yuan", "country": "China"}}, {"data": {"node_id": "10148386", "name": "CELLO HOLDINGS LIMITED"}}], "edges": [{"data": {"source": "12000002", "target": "10148386", "relationship": "OFFICER_OF"}}]}, "style": {}, "layout": {"name": "grid"}}
