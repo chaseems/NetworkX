@@ -1,0 +1,23 @@
+<html>
+
+<head>
+  <title>{{ title }} - microblog</title>
+</head>
+
+<body>
+  <h1>Hi, {{ title }}!</h1>
+  <h2>{% for post in posts %}</h2>
+  <div>
+    <p>{{ title }} year: <b>{{ year }}</b></p>
+  </div>
+  {% endfor %}
+
+  <form method="post">
+    Name <input type="text" name="title" autocomplete="off" required>
+    Year <input type="text" name="year" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="Add">
+  </form>
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <title>Searching Page</title>
+</head>
+
+<body>
+  
+
+  <form method="post">
+    Name: <input type="text" name="name" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="Add">
+  </form>
+
+  <h1>The Results: {{ name }}!</h1>
+  {% for n in names %}
+    <div>
+        <p>
+            Name: <b>{{ n }}</b>
+            <span class="float-right">
+              <a class="btn" href="{{url_for('edit',name=name)}}">Get graph</a>
+            </span>
+        </p>
+    </div>
+  {% endfor %}
+  <img src="{{url_for('static',filename='images/totoro.gif')}}">
+
+</body>
+
+</html>
